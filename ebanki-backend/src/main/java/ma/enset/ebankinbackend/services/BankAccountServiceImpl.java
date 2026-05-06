@@ -35,7 +35,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-
+        System.out.println("HERE : "+customerDTO.getName());
         log.info("Saving new customer");
         Customer customer = dtoMapper.fromCustomer(customerDTO);
         Customer savedCustomer = custumerRepository.save(customer);
@@ -217,6 +217,13 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountHistoryDTO.setPageSize(size);
         accountHistoryDTO.setTotalPages(accountOperations.getTotalPages());
         return accountHistoryDTO;
+    }
+
+    @Override
+    public List<CustomerDTO> SearchCustomers(String keyword) {
+        List<Customer> customers = custumerRepository.searchCustomer(keyword);
+        List<CustomerDTO> customerDTOS =  customers.stream().map(customer -> dtoMapper.fromCustomer(customer)).collect(Collectors.toList());
+        return customerDTOS;
     }
 
 }

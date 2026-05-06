@@ -5,14 +5,12 @@ import ma.enset.ebankinbackend.dtos.AccountOperationDTO;
 import ma.enset.ebankinbackend.dtos.BankAccountDTO;
 import ma.enset.ebankinbackend.exceptions.BankAccountNotFoundException;
 import ma.enset.ebankinbackend.services.BankAccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class BankAccountRestAPI {
 
     private BankAccountService bankAccountService;
@@ -45,4 +43,6 @@ public class BankAccountRestAPI {
             @RequestParam(name="size", defaultValue = "3") int size) throws BankAccountNotFoundException {
         return bankAccountService.getAccountHistory(accountId, page, size);
     }
+
+
 }
