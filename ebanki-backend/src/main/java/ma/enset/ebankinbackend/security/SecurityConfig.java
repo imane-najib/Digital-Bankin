@@ -23,6 +23,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -93,5 +96,16 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         // provider.setUserDetailsService(userDetailsService);///cette ligne a fait un erreur
         return new ProviderManager(provider);
+    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();//Tu crées un objet qui contient les règles CORS
+        corsConfiguration.addAllowedOrigin("*");//Autorise tous les domaines
+        corsConfiguration.addAllowedMethod("*");//Autorise tous les methodes http put , delete, post ...
+        corsConfiguration.addAllowedHeader("*");//Autorise tous les headers :
+        //corsConfiguration.setExposedHeaders(List.of("x-auth-token"));//Permet au frontend de lire ce header qu'on envoie qui contient le token (voir on a deja lui a donner ce nom)
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();//un objet source:C’est un conteneur de configurations CORS liées à des URLs
+        source.registerCorsConfiguration("/**", corsConfiguration);//Cette ligne fait le lien entre => une URL :une configuration CORS(Applique corsConfiguration à toutes les routes)
+        return source;
     }
 }
